@@ -6,4 +6,4 @@ Ce bot permet de lire le fichier .ics (calendrier) hebergé par l'ISEN
 et d'afficher quelques infos dont le numéro de salle réservée.
 
 Vous aurez besoin d'entrer votre propre TOKEN à la ligne 8.
-Et l'url de l'ics qui vous volez lire à la ligne 16.
+Et l'url de l'ics qui vous voulez lire à la ligne 16.
