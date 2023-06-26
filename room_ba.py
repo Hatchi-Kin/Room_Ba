@@ -82,13 +82,13 @@ def get_the_right_room(commande: str) -> str:
 
 # Action à effectuer pour la commande !matin
 @bot.command(name='matin', help="Affiche la salle de classe pour ce matin")
-async def room_command(ctx):    
+async def room_morning_command(ctx):    
     info = get_the_right_room("matin")
     await ctx.send(info)
 
 
 @bot.command(name='aprem', help="Affiche la salle de classe pour cet après-midi")
-async def room_command(ctx):
+async def room_afternoon_command(ctx):
     info = get_the_right_room("aprem")
     await ctx.send(info)
 
