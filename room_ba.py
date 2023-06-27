@@ -26,7 +26,7 @@ def get_the_right_room(commande: str) -> str:
         calendar = Calendar(response.text)
         events = [event for event in calendar.events if event.begin.date() == today]
         if events:
-            # Il y a deux événements par jour, le premier est le matin, le deuxième est l'après-midi
+            # Il y a deux événements par jour, etrangement, étrangement, le premier [0] est celui de 14h00, le deuxième [1] est celui de 09h00
             event = events[1]
             description = event.description.encode('latin-1').decode('utf-8')
             # Pas envie de récupérer toute la description, on récupère juste la ligne qui nous intéresse
