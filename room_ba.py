@@ -141,7 +141,7 @@ async def on_ready():
         await asyncio.sleep(1)
 
 async def send_message():
-    channel = bot.get_channel('id_channel')#id du channel room-bot
+    channel = bot.get_channel('id_channel')#id du channel room-bot 1112449155848212640
 
     if channel:
         await channel.send(automatique())
