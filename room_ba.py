@@ -3,11 +3,13 @@ import discord
 from discord.ext import tasks, commands
 from ics import Calendar, Event
 import requests
-
+import schedule
+import asyncio
 # Pour que le bot fonctionne, il faut renseigner votre token ici et l'url de votre fichier .ics (première ligne de la fonction get_the_right_room)
 TOKEN = "YOUR TOKEN HERE"
 
 intents = discord.Intents.all()
+intents.presences = False
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 #################################################
@@ -98,6 +100,51 @@ async def room_tomorrow_command(ctx):
     info = get_the_right_room("demain")
     await ctx.send(info)
 
+
+async def automatique():
+    ics_url = "URL TO YOUR .ICS HERE"
+    # sends a GET request to the URL using the requests library. 
+    # The response from the server is stored in the response variable. 
+    # You can then access the response content using response.content
+    response = requests.get(ics_url)
+    today = datetime.date.today()
+    calendar = Calendar(response.text)
+    events = [event for event in calendar.events if event.begin.date() == today]
+    if events:
+        # Il y a deux événements par jour, etrangement, étrangement, le premier [0] est celui de 14h00, le deuxième [1] est celui de 09h00
+        event = events[1]
+        description = event.description.encode('latin-1').decode('utf-8')
+        # Pas envie de récupérer toute la description, on récupère juste la ligne qui nous intéresse
+        intervenant = ""
+        for line in description.splitlines():
+            if line.startswith("- Intervenant(s) :"):
+                intervenant += line
+        # les fichiers .ics sont encodés en latin-1, on les décode en utf-8 pour pouvoir les afficher
+        location = event.location.encode('latin-1').decode('utf-8')
+        # On retourne le message à afficher formatté tout joli
+        return f"Salle : {location}Commence à : {event.begin.time()}\n{intervenant[2:]}"
+    else:
+        return "Aucun événement trouvé pour cette date."
+
 #################################################
+
+@bot.event
+async def on_ready():
+    print('Bot is ready.')
+
+    # Schedule the task to run every day at 8 AM
+    schedule.every().day.at('08:00').do(send_message)
+
+    # Run the schedule in the background
+    while True:
+        schedule.run_pending()
+        await asyncio.sleep(1)
+
+async def send_message():
+    channel = bot.get_channel('id_channel')#id du channel room-bot
+
+    if channel:
+        await channel.send(automatique())
+
 
 bot.run(TOKEN)
