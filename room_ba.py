@@ -4,8 +4,9 @@ from discord.ext import tasks, commands
 from ics import Calendar, Event
 import requests
 
-# Pour que le bot fonctionne, il faut renseigner votre token ici et l'url de votre fichier .ics (première ligne de la fonction get_the_right_room)
-TOKEN = "YOUR TOKEN HERE"
+# Pour que le bot fonctionne, il faut renseigner votre token discord ici 
+# et l'url de votre fichier .ics (première ligne de la fonction get_the_right_room)
+TOKEN = "DISCORD TOKEN HERE"
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -24,20 +25,30 @@ def get_the_right_room(commande: str) -> str:
 
     if commande == "matin":
         calendar = Calendar(response.text)
+        # les fichiers .ics sont des enchainements d'événements, on parcourt donc tous les événements du fichier
+        # et on ne garde que ceux qui ont lieu aujourd'hui
         events = [event for event in calendar.events if event.begin.date() == today]
         if events:
-            # Il y a deux événements par jour, etrangement, étrangement, le premier [0] est celui de 14h00, le deuxième [1] est celui de 09h00
-            event = events[1]
+            # Il y a deux événements par jours, un pour la matinée et un pour l'après-midi
+            # le premier [0] est celui de 09h00, le deuxième [1] est celui de 14h00
+            event = events[0]
+            # les fichiers .ics sont encodés en latin-1, on les décode en utf-8 pour pouvoir les afficher
             description = event.description.encode('latin-1').decode('utf-8')
-            # Pas envie de récupérer toute la description, on récupère juste la ligne qui nous intéresse
+            # Pas envie de récupérer toute la description, on récupère juste les lignes qui nous intéressent.
+            # les fichiers .ics sont encodés en latin-1, on les décode en utf-8 pour pouvoir les afficher
+            location = event.location.encode('latin-1').decode('utf-8')
+            # strftime permet de formater la date et l'heure pour ne pas afficher les secondes
+            horaire = event.begin.time().strftime("%H:%M")
             intervenant = ""
+            descript = ""
             for line in description.splitlines():
                 if line.startswith("- Intervenant(s) :"):
                     intervenant += line
-            # les fichiers .ics sont encodés en latin-1, on les décode en utf-8 pour pouvoir les afficher
-            location = event.location.encode('latin-1').decode('utf-8')
+                if line.startswith("- Description :"):
+                    descript += line
             # On retourne le message à afficher formatté tout joli
-            return f"Salle : {location}Commence à : {event.begin.time()}\n{intervenant[2:]}"
+            # [2:] permet de supprimer les deux premiers caractères (sur le fichier .ics, il y a un tiret et un espace avant le texte)
+            return f"Salle : {location}Commence à : {horaire}\n{intervenant[2:]}\n{descript[2:]}"
         else:
             return "Aucun événement trouvé pour cette date."
 
@@ -46,14 +57,18 @@ def get_the_right_room(commande: str) -> str:
         calendar = Calendar(response.text)
         events = [event for event in calendar.events if event.begin.date() == today]
         if events:
-            event = events[0]
+            event = events[1]
             description = event.description.encode('latin-1').decode('utf-8')
             intervenant = ""
+            descript = ""
             for line in description.splitlines():
                 if line.startswith("- Intervenant(s) :"):
                     intervenant += line
+                if line.startswith("- Description :"):
+                    descript += line
             location = event.location.encode('latin-1').decode('utf-8')
-            return f"Salle : {location}Commence à : {event.begin.time()}\n{intervenant[2:]}"
+            horaire = event.begin.time().strftime("%H:%M")
+            return f"Salle : {location}Commence à : {horaire}\n{intervenant[2:]}\n{descript[2:]}"
         else:
             return "Aucun événement trouvé pour cette date."
         
@@ -63,20 +78,23 @@ def get_the_right_room(commande: str) -> str:
         calendar = Calendar(response.text)
         events = [event for event in calendar.events if event.begin.date() == tomorrow]
         if events:
-            # pour une raison que je ne comprends pas, ici, le seul moyen d'afficher le premier événement de la liste est de prendre le deuxième
-            event = events[1]
+            event = events[0]
             description = event.description.encode('latin-1').decode('utf-8')
             intervenant = ""
+            descript = ""
             for line in description.splitlines():
                 if line.startswith("- Intervenant(s) :"):
                     intervenant += line
+                if line.startswith("- Description :"):
+                    descript += line
             location = event.location.encode('latin-1').decode('utf-8')
-            return f"Salle : {location}Commence à : {event.begin.time()}\n{intervenant[2:]}"
+            horaire = event.begin.time().strftime("%H:%M")
+            return f"Salle : {location}Commence à : {horaire}\n{intervenant[2:]}\n{descript[2:]}"
         else:
             return "Aucun événement trouvé pour cette date."
         
     else:
-        return "Wut?"
+        return "Want some help? Type !help :) "
 
 #################################################
 
