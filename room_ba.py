@@ -3,10 +3,15 @@ import discord
 from discord.ext import tasks, commands
 from ics import Calendar, Event
 import requests
+import os
+from dotenv import load_dotenv
 
-# Pour que le bot fonctionne, il faut renseigner votre token discord ici 
-# et l'url de votre fichier .ics (première ligne de la fonction get_the_right_room)
-TOKEN = "DISCORD TOKEN HERE"
+#################################################
+load_dotenv()
+# Pour que le bot fonctionne, il faut renseigner votre token discord dans le fichier .env
+# de même pour l'url de votre fichier .ics 
+TOKEN = os.getenv('DISCORD_TOKEN')
+ICS_URL = os.getenv('ICS_URL')
 
 intents = discord.Intents.all()
 bot = commands.Bot(command_prefix='!', intents=intents)
@@ -16,11 +21,11 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 # Fonction qui permet de lire la bonne partie du fichier .ics en fonction de la commande
 def get_the_right_room(commande: str) -> str:
 
-    ics_url = "URL TO YOUR .ICS HERE"
+    global ICS_URL
     # sends a GET request to the URL using the requests library. 
     # The response from the server is stored in the response variable. 
     # You can then access the response content using response.content
-    response = requests.get(ics_url)
+    response = requests.get(ICS_URL)
     today = datetime.date.today()
 
     if commande == "matin":
@@ -92,7 +97,7 @@ def get_the_right_room(commande: str) -> str:
             return f"Salle : {location}Commence à : {horaire}\n{intervenant[2:]}\n{descript[2:]}"
         else:
             return "Aucun événement trouvé pour cette date."
-        
+
     else:
         return "Want some help? Type !help :) "
 
