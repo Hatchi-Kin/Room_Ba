@@ -8,12 +8,12 @@ import asyncio
 from dotenv import load_dotenv
 import os
 
-# Pour que le bot fonctionne, il faut renseigner votre token ici et l'url de votre fichier .ics (première ligne de la fonction get_the_right_room)
 
 load_dotenv() #load la rariable TOKEN et ICS_URL
 TOKEN = os.getenv('TOKEN')
-ics_url = os.getenv('ICS_URL')
+ICS_URL = os.getenv('ICS_URL')
 ID_SALON = os.getenv('ID_SALON')
+HEURE = os.getenv('HEURE')
 
 intents = discord.Intents.all()
 intents.presences = False
@@ -21,16 +21,9 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 #################################################
 
-# Fonction qui permet de lire la bonne partie du fichier .ics en fonction de la commande
-def get_the_right_room(commande: str,ics_url) -> str:
-
-    #ics_url = "https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics"
-    # sends a GET request to the URL using the requests library. 
-    # The response from the server is stored in the response variable. 
-    # You can then access the response content using response.content
-    response = requests.get(ics_url)
+def get_the_right_room(commande: str,ICS_URL) -> str:
+    response = requests.get(ICS_URL)
     today = datetime.date.today()
-
     if commande == "matin":
         calendar = Calendar(response.text)
         events = [event for event in calendar.events if event.begin.date() == today]
@@ -108,19 +101,15 @@ async def room_tomorrow_command(ctx):
     await ctx.send(info)
 
 
-def automatique(ics_url):
-    #ics_url = "https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics"
-    # sends a GET request to the URL using the requests library. 
-    # The response from the server is stored in the response variable. 
-    # You can then access the response content using response.content
-    response = requests.get(ics_url)
+def automatique():
+    response = requests.get(ICS_URL)
     today = datetime.date.today()
     calendar = Calendar(response.text)
     events = [event for event in calendar.events if event.begin.date() == today]
     if events:
-        # Il y a deux événements par jour, etrangement, étrangement, le premier [0] est celui de 14h00, le deuxième [1] est celui de 09h00
-        event_matin = events[1]
-        event_aprem = events[0]
+        # Il y a deux événements par jour, le premier [0] , le deuxième [1] 
+        event_matin = events[0]
+        event_aprem = events[1]
         
         description_matin = event_matin.description.encode('latin-1').decode('utf-8')
         intervenant_matin = ""
@@ -143,22 +132,18 @@ def automatique(ics_url):
 
 #################################################
 
-
 @bot.event
 async def on_ready():
     print('Bot is ready.')
-    # Schedule the task to run every day at 8 AM
-    schedule.every().day.at('00:01').do(lambda: asyncio.create_task(send_message(ics_url)))  # Utilisez asyncio.create_task() pour exécuter la coroutine en arrière-plan
+    schedule.every().day.at(HEURE).do(lambda: asyncio.create_task(send_message()))  #asyncio.create_task() execute la coroutine en arrière-plan
     # Run the schedule in the background
     while True:
         schedule.run_pending()
         await asyncio.sleep(1)
 
-async def send_message(ics_url):
-    channel = bot.get_channel(ID_SALON)  # ID du channel room-bot
-
+async def send_message():
+    channel = bot.get_channel(int(ID_SALON))  # ID du channel room-bot
     if channel:
-        await channel.send(automatique(ics_url))
-
+        await channel.send(automatique())
 
 bot.run(TOKEN)
