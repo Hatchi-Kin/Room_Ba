@@ -5,8 +5,15 @@ from ics import Calendar, Event
 import requests
 import schedule
 import asyncio
+from dotenv import load_dotenv
+import os
+
 # Pour que le bot fonctionne, il faut renseigner votre token ici et l'url de votre fichier .ics (première ligne de la fonction get_the_right_room)
-TOKEN = "MTExNzA3NDc0MjEwMTQyNjI2Nw.GztRX8.okIg9igBDFTq1kjHhRQ7gno5DgkL3q3ooTt36A"
+
+load_dotenv() #load la rariable TOKEN et ICS_URL
+TOKEN = os.getenv('TOKEN')
+ics_url = os.getenv('ICS_URL')
+ID_SALON = os.getenv('ID_SALON')
 
 intents = discord.Intents.all()
 intents.presences = False
@@ -15,9 +22,9 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 #################################################
 
 # Fonction qui permet de lire la bonne partie du fichier .ics en fonction de la commande
-def get_the_right_room(commande: str) -> str:
+def get_the_right_room(commande: str,ics_url) -> str:
 
-    ics_url = "https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics"
+    #ics_url = "https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics"
     # sends a GET request to the URL using the requests library. 
     # The response from the server is stored in the response variable. 
     # You can then access the response content using response.content
@@ -101,8 +108,8 @@ async def room_tomorrow_command(ctx):
     await ctx.send(info)
 
 
-def automatique():
-    ics_url = "https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics"
+def automatique(ics_url):
+    #ics_url = "https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics"
     # sends a GET request to the URL using the requests library. 
     # The response from the server is stored in the response variable. 
     # You can then access the response content using response.content
@@ -141,17 +148,17 @@ def automatique():
 async def on_ready():
     print('Bot is ready.')
     # Schedule the task to run every day at 8 AM
-    schedule.every().day.at('00:01').do(lambda: asyncio.create_task(send_message()))  # Utilisez asyncio.create_task() pour exécuter la coroutine en arrière-plan
+    schedule.every().day.at('00:01').do(lambda: asyncio.create_task(send_message(ics_url)))  # Utilisez asyncio.create_task() pour exécuter la coroutine en arrière-plan
     # Run the schedule in the background
     while True:
         schedule.run_pending()
         await asyncio.sleep(1)
 
-async def send_message():
-    channel = bot.get_channel(1112449155848212640)  # ID du channel room-bot
+async def send_message(ics_url):
+    channel = bot.get_channel(ID_SALON)  # ID du channel room-bot
 
     if channel:
-        await channel.send(automatique())
+        await channel.send(automatique(ics_url))
 
 
 bot.run(TOKEN)
