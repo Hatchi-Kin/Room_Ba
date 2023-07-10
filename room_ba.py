@@ -7,7 +7,7 @@ import schedule
 import asyncio
 from dotenv import load_dotenv
 import os
-
+import asyncio
 
 load_dotenv() #load la rariable TOKEN et ICS_URL
 TOKEN = os.getenv('TOKEN')
@@ -21,7 +21,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 #################################################
 
-def get_the_right_room(commande: str,ICS_URL) -> str:
+def get_the_right_room(commande: str) -> str:
     response = requests.get(ICS_URL)
     today = datetime.date.today()
     if commande == "matin":
@@ -80,6 +80,8 @@ def get_the_right_room(commande: str,ICS_URL) -> str:
     else:
         return "Wut?"
 
+def get_the_comande(id):
+    return "id du salon update: ",id
 #################################################
 
 # Action à effectuer pour la commande !matin
@@ -99,7 +101,13 @@ async def room_afternoon_command(ctx):
 async def room_tomorrow_command(ctx):    
     info = get_the_right_room("demain")
     await ctx.send(info)
-
+    
+@bot.command(name='id', help="Affiche la salle de classe pour le lendemain")
+async def command(ctx):    
+    id_salon = ctx.channel.id
+    info = get_the_comande(id_salon)
+    await ctx.send(info)
+    await on_ready(id_salon)
 
 def automatique():
     response = requests.get(ICS_URL)
@@ -125,25 +133,25 @@ def automatique():
                 intervenant_aprem += line
         location = event_aprem.location.encode('latin-1').decode('utf-8')
 
-        return f"matin : Salle : {location}Commence à : {event_matin.begin.time()}\n{intervenant_matin[2:]} \b aprem : Salle : {location}Commence à : {event_aprem.begin.time()}\n{intervenant_aprem[2:]} "
+        return f"matin : Salle : {location}Commence à : {event_matin.begin.time()}\n{intervenant_matin[2:]} \n\n aprem : Salle : {location}Commence à : {event_aprem.begin.time()}\n{intervenant_aprem[2:]} "
 
     else:
         return "Aucun événement trouvé pour cette date le matin."
 
 #################################################
 
-@bot.event
-async def on_ready():
+async def on_ready(id_salon):
     print('Bot is ready.')
-    schedule.every().day.at(HEURE).do(lambda: asyncio.create_task(send_message()))  #asyncio.create_task() execute la coroutine en arrière-plan
+    print(f'We have logged in as {bot.user.name}')
+    schedule.every().day.at(HEURE).do(lambda: asyncio.create_task(send_message(id_salon)))  #asyncio.create_task() execute la coroutine en arrière-plan
     # Run the schedule in the background
     while True:
         schedule.run_pending()
         await asyncio.sleep(1)
 
-async def send_message():
-    channel = bot.get_channel(int(ID_SALON))  # ID du channel room-bot
+async def send_message(id_salon):
+    channel = bot.get_channel(int(id_salon))  # ID du channel room-bot
     if channel:
         await channel.send(automatique())
-
+#asyncio.run(on_ready(ID_SALON))
 bot.run(TOKEN)
