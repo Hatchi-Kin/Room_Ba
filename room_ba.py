@@ -18,6 +18,8 @@ HEURE = os.getenv('HEURE')
 intents = discord.Intents.all()
 intents.presences = False
 bot = commands.Bot(command_prefix='!', intents=intents)
+last_id_salon = {} #dicsionaire pour le salon automatique   
+ 
 
 #################################################
 
@@ -106,6 +108,9 @@ async def room_tomorrow_command(ctx):
 async def command(ctx):    
     id_salon = ctx.channel.id
     info = get_the_comande(id_salon)
+    print("salon id set : ",id_salon)
+    last_id_salon['last_id'] = id_salon
+
     await ctx.send(info)
     await on_ready(id_salon)
 
@@ -141,17 +146,21 @@ def automatique():
 #################################################
 
 async def on_ready(id_salon):
-    print('Bot is ready.')
     print(f'We have logged in as {bot.user.name}')
-    schedule.every().day.at(HEURE).do(lambda: asyncio.create_task(send_message(id_salon)))  #asyncio.create_task() execute la coroutine en arrière-plan
-    # Run the schedule in the background
-    while True:
-        schedule.run_pending()
-        await asyncio.sleep(1)
+    if not hasattr(bot, 'is_schedule_running'):
+        bot.is_schedule_running = True
+        schedule.every().day.at(HEURE).do(lambda: asyncio.create_task(send_message(id_salon)))  #asyncio.create_task() execute la coroutine en arrière-plan
+        # Run the schedule in the background
+        while True:
+            schedule.run_pending()
+            await asyncio.sleep(1)
 
 async def send_message(id_salon):
-    channel = bot.get_channel(int(id_salon))  # ID du channel room-bot
+    last_id = last_id_salon.get('last_id')
+    channel = bot.get_channel(int(last_id))  # ID du channel room-bot
     if channel:
         await channel.send(automatique())
+print('Bot is ready.')
+print('heure prevu',HEURE)
 #asyncio.run(on_ready(ID_SALON))
 bot.run(TOKEN)
