@@ -117,6 +117,9 @@ async def command(ctx):
 def automatique():
     response = requests.get(ICS_URL)
     today = datetime.date.today()
+    
+    filtre_events = []
+    
     calendar = Calendar(response.text)
     events = [event for event in calendar.events if event.begin.date() == today]
     if events:
@@ -137,8 +140,22 @@ def automatique():
             if line.startswith("- Intervenant(s) :"):
                 intervenant_aprem += line
         location = event_aprem.location.encode('latin-1').decode('utf-8')
+        
+#####################################################################################
+#determiné le matin de l'aprem par une liste de"filtre event"du plus tot au plus tard
+#####################################################################################
+        for event in events:
+            if event.begin.date() == today:
+                filtre_events.append(event)
+                
+        filtre_events.sort(key=lambda event: event.begin.time())
+        if filtre_events:
+            horaire_matin = filtre_events[0].begin.time()
+            horaire_aprem = filtre_events[1].begin.time()
+        else:
+            return "format de date non valide ou inexistant"
 
-        return f"matin : Salle : {location}Commence à : {event_matin.begin.time()}\n{intervenant_matin[2:]} \n\n aprem : Salle : {location}Commence à : {event_aprem.begin.time()}\n{intervenant_aprem[2:]} "
+        return f"matin : Salle : {location}Commence à : {event_matin.begin.time()}\n{intervenant_matin[2:]} \n\n aprem : Salle : {location}Commence à : {event_aprem.begin.time()}\n{intervenant_aprem[2:]} \n \n horaire matin:{horaire_matin} -- horaire aprem:{horaire_aprem}"
 
     else:
         return "Aucun événement trouvé pour cette date le matin."

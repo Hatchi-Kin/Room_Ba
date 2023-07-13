@@ -1,6 +1,7 @@
 def get_the_right_room(commande: str) -> str:
     response = requests.get(ICS_URL)
     today = datetime.date.today()
+    
     if commande == "matin":
         calendar = Calendar(response.text)
         events = [event for event in calendar.events if event.begin.date() == today]
@@ -16,6 +17,7 @@ def get_the_right_room(commande: str) -> str:
             # les fichiers .ics sont encodés en latin-1, on les décode en utf-8 pour pouvoir les afficher
             location = event.location.encode('latin-1').decode('utf-8')
             # On retourne le message à afficher formatté tout joli
+            
             return f"Salle : {location}Commence à : {event.begin.time()}\n{intervenant[2:]}"
         else:
             return "Aucun événement trouvé pour cette date le matin."
