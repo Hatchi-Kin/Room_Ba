@@ -1,6 +1,6 @@
-DateTime==5.1
-python-dotenv==1.0.0
+datetime==5.1
+requests==2.31.0
 discord.py==2.3.1
 discord-ext-bot==1.0.1
-ics==0.7.2 
-requests==2.31.0
+ics==0.7.2
+python-dotenv==1.0.0
