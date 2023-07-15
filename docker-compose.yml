@@ -1,0 +1,11 @@
+version: '3.8'
+services:
+  app:
+    build:
+      context: https://github.com/Hatchi-Kin/Room_Ba.git
+      dockerfile: Dockerfile
+    environment:
+      TOKEN:
+      ICS_URL:
+      ID_SALON:
+      HEURE:
