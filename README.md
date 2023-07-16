@@ -1,7 +1,7 @@
 # Room_Ba le gentil bot discord
 
 L'ISEN utilise le service WebAurion pour que profs et étudiants aient un accès à leur planning.
-Ce c'est pas très pratique à utiliser, en particulier lorsqu'on veut juste rapidement
+Ce n'est pas très pratique à utiliser, en particulier lorsqu'on veut juste rapidement
 afficher l'heure et la salle de notre prochain cours.
 
 Ce bot discord écrit en python permet de:
