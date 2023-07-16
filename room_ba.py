@@ -113,6 +113,11 @@ async def command(ctx):
     await ctx.send(info)
     await on_ready()
 
+@bot.command(name='semaine', help="Affiche la salle de classe pour ce matin")
+async def room_afternoon_command(ctx):
+    info = semaine()
+    await ctx.send(info)
+    
 def automatique():
     response = requests.get(ICS_URL)
     today = datetime.date.today()
@@ -166,10 +171,22 @@ async def send_message():
     if channel:
         await channel.send(automatique())
 
+
+def semaine():
+    print("tenetative de faire une semaine")
+    dt = datetime.now()
+    # get day of the week as an integer (Monday = 0, Sunday = 6)
+    jour_nombre = dt.weekday()
+    for i in range(0,6): #faire afichr la semaine actuelle  
+        
+    
+    
+    return jour_semaine
+    
+
 print('Bot is ready.')
 print('heure prevu',HEURE)
 #asyncio.run(on_ready(ID_SALON))
-
 
 bot.run(TOKEN)
 print(f'We have logged in as {bot.user.name}')
