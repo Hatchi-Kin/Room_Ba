@@ -1,11 +1,13 @@
-version: '3.8'
+version: '2.2'
 services:
-  app:
-    build: .
-    command: python app.py
-    volumes:
-      - .:/app
-    environment:
-      TOKEN:
-      ICS_URL:
-      HEURE:
+    app:
+        build: .
+        command: python room_ba.py
+        volumes:
+            - .:/ap
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        environment:
+            - TOKEN=
+            - ICS_URL=
+            - HEURE=
