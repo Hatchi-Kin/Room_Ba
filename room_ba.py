@@ -136,14 +136,13 @@ def automatique():
         for event in events:
             if event.begin.date() == today:
                 filtre_events.append(event)
-        if filtre_events.sort(key=lambda event: event.begin.time(0)) == event_1.begin.time():
-            event_matin = event_1
-            event_aprem = event_2
-        else:
-            event_matin = event_2
-            event_aprem = event_1
-        return f"matin :\n {event_affichage(event_matin)}\n\n aprem :\n {event_affichage(event_aprem)}"
-    else:
+        text_automatique=""
+        for i in range (len(filtre_events)):
+            text_automatique=text_automatique + f"\n\n {event_affichage(filtre_events[i])}"
+        return text_automatique
+        #return f"matin :\n {event_affichage(event_matin)}\n\n aprem :\n {event_affichage(event_aprem)}"
+
+   else:
         return "Aucun événement trouvé pour cette date le matin."
 
 def event_affichage(event):
