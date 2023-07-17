@@ -141,8 +141,7 @@ def automatique():
             text_automatique=text_automatique + f"\n\n {event_affichage(filtre_events[i])}"
         return text_automatique
         #return f"matin :\n {event_affichage(event_matin)}\n\n aprem :\n {event_affichage(event_aprem)}"
-
-   else:
+    else:
         return "Aucun événement trouvé pour cette date le matin."
 
 def event_affichage(event):
@@ -170,18 +169,15 @@ async def send_message():
     if channel:
         await channel.send(automatique())
 
-
+"""
 def semaine():
     print("tenetative de faire une semaine")
     dt = datetime.now()
     # get day of the week as an integer (Monday = 0, Sunday = 6)
     jour_nombre = dt.weekday()
     for i in range(0,6): #faire afichr la semaine actuelle  
-        
-    
-    
     return jour_semaine
-    
+ """   
 
 print('Bot is ready.')
 print('heure prevu',HEURE)
