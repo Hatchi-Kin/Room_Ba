@@ -127,15 +127,13 @@ def automatique():
     events = [event for event in calendar.events if event.begin.date() == today]
     
     if events:
-        # Il y a deux événements par jour, le premier [0] , le deuxième [1] qui ont la posibilité de changer d'ordre
-        event_1 = events[0]
-        event_2 = events[1]
-#####################################################################################
-#determiné le matin de l'aprem par une liste de"filtre event"du plus tot au plus tard
-#####################################################################################
+###########################################################################################
+#determiné le matin de l'aprem par une liste de"filtre_events"du plus tot au plus tard
+###########################################################################################
         for event in events:
             if event.begin.date() == today:
                 filtre_events.append(event)
+        filtre_events.sort(key=lambda item: item.begin.time())
         text_automatique=""
         for i in range (len(filtre_events)):
             text_automatique=text_automatique + f"\n\n {event_affichage(filtre_events[i])}"
