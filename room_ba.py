@@ -175,7 +175,7 @@ def semaine():
     jour_nombre = dt.weekday()
     for i in range(0,6): #faire afichr la semaine actuelle  
     return jour_semaine
- """   
+"""   
 
 print('Bot is ready.')
 print('heure prevu',HEURE)
