@@ -10,6 +10,7 @@ def semaine():
     semaine_resultat = []
     i=joure_actuel 
     
+    
     while i >= 0:
         semaine_resultat.append(i*(-1))
         i=i-1
