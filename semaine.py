@@ -50,6 +50,7 @@ def data_planning(jour_n,jour_string):
             journee.append([jour_string,date, location, horaire, horaire_fin, description])
         return pd.DataFrame(journee, columns=['jour','date', 'location', 'horaire', 'horaire_fin', 'description'])
 df = pd.DataFrame(columns=['jour','date', 'location', 'horaire', 'horaire_fin', 'description'])
+
 @st.cache_data 
 def convert_df(df):
     # IMPORTANT: Cache the conversion to prevent computation on every rerun

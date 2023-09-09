@@ -1,0 +1,13 @@
+version: '2.2'
+services:
+    app:
+        build: .
+        command: python room_ba.py
+        volumes:
+            - .:/ap
+            - /etc/timezone:/etc/timezone:ro
+            - /etc/localtime:/etc/localtime:ro
+        environment:
+            - TOKEN=MTExNzA3NDc0MjEwMTQyNjI2Nw.Gp6o8V.-OOrGhPyDc_OmJyDx8pwhUc8DMDUrC5wXJaR4g
+            - ICS_URL=https://web.isen-ouest.fr/ICS/23_24_CODE_BZH_MICROSOFT_BREST_ALT.ics
+            - HEURE=21:55

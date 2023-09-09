@@ -1,67 +1,71 @@
 jour,date,location,horaire,horaire_fin,description
-lundi,24/07/2023,"S334 / S335 
+lundi,04/09/2023,"S340
+",09:00,13:00,"- Matière : Intelligence Artificielle
+- Cours : 
+- Activité : COURS
+- Intervenant(s) : Mohammed El Amine BECHAR
+- Description : Image / IA / Classification
+"
+lundi,04/09/2023,"S340
+",14:00,17:00,"- Matière : Intelligence Artificielle
+- Cours : 
+- Activité : COURS
+- Intervenant(s) : Mohammed El Amine BECHAR
+- Description : Image / IA / Classification
+"
+mardi,05/09/2023,"S340
+",09:00,13:00,"- Matière : Intelligence Artificielle
+- Cours : 
+- Activité : COURS
+- Intervenant(s) : Mohammed El Amine BECHAR
+- Description : Image / IA / Classification
+"
+mardi,05/09/2023,"S340
+",14:00,17:00,"- Matière : Intelligence Artificielle
+- Cours : 
+- Activité : COURS
+- Intervenant(s) : Mohammed El Amine BECHAR
+- Description : Image / IA / Classification
+"
+mercredi,06/09/2023,"S340
+",09:00,13:00,"- Matière : Intelligence Artificielle
+- Cours : 
+- Activité : COURS
+- Intervenant(s) : Mohammed El Amine BECHAR
+- Description : Image / IA / Classification
+"
+mercredi,06/09/2023,"S340
+",14:00,17:00,"- Matière : Intelligence Artificielle
+- Cours : 
+- Activité : COURS
+- Intervenant(s) : Mohammed El Amine BECHAR
+- Description : Image / IA / Classification
+"
+jeudi,07/09/2023,"S302 / S340
 ",09:00,13:00,"- Matière : Intelligence Artificielle
 - Cours : 
 - Activité : COURS
 - Intervenant(s) : Stéphane JAMIN-NORMAND
-- Description : Web Flask
+- Description : Docker / Matching entreprise 302
 "
-lundi,24/07/2023,"S334 / S335 
+jeudi,07/09/2023,"S302 / S340
 ",14:00,17:00,"- Matière : Intelligence Artificielle
 - Cours : 
 - Activité : COURS
 - Intervenant(s) : Stéphane JAMIN-NORMAND
-- Description : Web Flask
+- Description : Docker / matching entreprise 302
 "
-mardi,25/07/2023,"S334 / S335 
+vendredi,08/09/2023,"S210 / S340
 ",09:00,13:00,"- Matière : Intelligence Artificielle
 - Cours : 
 - Activité : COURS
 - Intervenant(s) : Stéphane JAMIN-NORMAND
-- Description : Web Flask
+- Description : Data Viz
 "
-mardi,25/07/2023,"S334 / S335 
+vendredi,08/09/2023,"S210 / S340
 ",14:00,17:00,"- Matière : Intelligence Artificielle
 - Cours : 
 - Activité : COURS
 - Intervenant(s) : Stéphane JAMIN-NORMAND
-- Description : Web Flask
-"
-mercredi,26/07/2023,"S334 / S335 
-",09:00,13:00,"- Matière : Intelligence Artificielle
-- Cours : 
-- Activité : COURS
-- Intervenant(s) : Stéphane JAMIN-NORMAND
-- Description : Web Flask
-"
-mercredi,26/07/2023,"S334 / S335 
-",14:00,17:00,"- Matière : Intelligence Artificielle
-- Cours : 
-- Activité : COURS
-- Intervenant(s) : Stéphane JAMIN-NORMAND
-- Description : Web Flask
-"
-jeudi,27/07/2023,,09:00,13:00,"- Matière : Informatique
-- Cours : 
-- Activité : COURS
-- Intervenant(s) : Conférence-tutorat INTERVENANT EXT BREST
-- Description : 
-"
-jeudi,27/07/2023,,14:00,17:00,"- Matière : Informatique
-- Cours : 
-- Activité : COURS
-- Intervenant(s) : Conférence-tutorat INTERVENANT EXT BREST
-- Description : 
-"
-vendredi,28/07/2023,,09:00,13:00,"- Matière : Informatique
-- Cours : 
-- Activité : COURS
-- Intervenant(s) : Conférence-tutorat INTERVENANT EXT BREST
-- Description : 
-"
-vendredi,28/07/2023,,14:00,17:00,"- Matière : Informatique
-- Cours : 
-- Activité : COURS
-- Intervenant(s) : Conférence-tutorat INTERVENANT EXT BREST
-- Description : 
+- Description : Data Viz
 "
