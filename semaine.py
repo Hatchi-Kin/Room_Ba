@@ -12,6 +12,7 @@ import numpy as np
 import pandas as pd
 
 def semaine():
+    
     # joure de la semaine (lundi = 0, dimanche = 6)
     joure_actuel = datetime.datetime.now().weekday()
     #print("jour=",joure_actuel)
