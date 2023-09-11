@@ -9,11 +9,6 @@ import base64
 
 
 
-
-
-
-
-
 import datetime
 from ics import Calendar
 import requests
